@@ -1,0 +1,99 @@
+﻿<Window x:Class="SeevoConfig.Windows.Main.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:SeevoConfig.Windows.Main"
+        d:DataContext="{d:DesignInstance viewModels:MainWindowVM}"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded" Closing="Window_Closing" Closed="Window_Closed"
+        Title="SeevoConfig" Height="450" Width="800">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Menu -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="_Exit" />
+        </Menu>
+        <!-- Menu -->
+
+        <!-- Top Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Content="ExampleData" Click="ExampleDataButton_Click" />
+            <Button Content="Discovery" Click="DiscoveryButton_Click" />
+            <Button Content="Send" Click="SendButton_Click" />
+            <Button Content="Open file" Click="OpenButton_Click" />
+            <Button Content="Save as" Click="SaveAsButton_Click" />
+        </StackPanel>
+        <!-- Top Buttons -->
+
+        <!-- List -->
+        <ListBox Grid.Row="2" ItemsSource="{Binding Project.Devices}" SelectedItem="{Binding SelectedDevice}" SelectionChanged="DevicesListBox_SelectionChanged"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColA" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColB" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColC" />
+                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColD" />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Grid.Column="0" Content="{Binding Id}" />
+                        <Label Grid.Column="1" Content="{Binding Mac}" />
+                        <Label Grid.Column="2" Content="{Binding Address}" />
+                        <Label Grid.Column="3" Content="*" Visibility="{Binding HasChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <!-- List -->
+
+        <!-- Edit Controls -->
+        <GroupBox Grid.Row="3" IsEnabled="{Binding IsEditEnabled}">
+            <StackPanel>
+                <WrapPanel>
+                    <Label Content="Id: " />
+                    <TextBox Text="{Binding EditDevice.Id}" TextChanged="EditTextBox_TextChanged" />
+                    <Label Content="IP: " />
+                    <TextBox Text="{Binding EditDevice.IP}" TextChanged="EditTextBox_TextChanged" />
+                    <Label Content="Port: " />
+                    <TextBox Text="{Binding EditDevice.Port}" TextChanged="EditTextBox_TextChanged" />
+                    <Label Content="Events: " />
+                    <ComboBox ItemsSource="{Binding EditDevice.AvailableEvents}" IsSynchronizedWithCurrentItem="True"
+                              SelectedItem="{Binding EditDevice.SelectedEvent}" SelectionChanged="EventsComboBox_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}"></TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </WrapPanel>
+                <StackPanel Orientation="Horizontal" >
+                    <Button Content="Cancel" Click="CancelButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" />
+                    <Button Content="Apply" Click="ApplyButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" />
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+        <!-- Edit Controls -->
+
+        <!-- Status -->
+        <StatusBar Grid.Row="4">
+
+        </StatusBar>
+        <!-- Status -->
+    </Grid>
+</Window>
