@@ -63,11 +63,13 @@ namespace SeevoConfig.Windows.Main
 
         private void ExampleDataButton_Click(object sender, RoutedEventArgs e)
         {
+            viewModel.LogTextWrite = "Button Example Data";
             communication.LoadExampleData();
         }
 
         private void DiscoveryButton_Click(object sender, RoutedEventArgs e)
         {
+            viewModel.LogTextWrite = "Discovery";
             communication.Discovery();
         }
 

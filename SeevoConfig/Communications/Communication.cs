@@ -59,9 +59,12 @@ namespace SeevoConfig.Communications
         {
             // open port/communication here
 
-            var json = "";
-            var device = JsonSerializer.Deserialize<SeevoModel>(json);
-            DeviceJsonReceived.Invoke(new DeviceJsonReceivedEventArgs(device));
+            //var json = "";
+            //var device = JsonSerializer.Deserialize<SeevoModel>(json);
+            //DeviceJsonReceived.Invoke(new DeviceJsonReceivedEventArgs(device));
+
+            var multicast = new MulticastDiscovery();
+            multicast.StartMulticast();
         }
 
         public void CancelDiscovering()

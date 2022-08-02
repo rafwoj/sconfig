@@ -20,5 +20,11 @@ namespace SeevoConfig.Other
         {
             // do something here
         }
+
+        public static void LogText(string txt)
+        {
+            // do something here
+            MessageBox.Show(txt, "Looger txt", MessageBoxButton.OK, MessageBoxImage.Error);            
+        }
     }
 }

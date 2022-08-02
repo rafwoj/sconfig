@@ -19,7 +19,9 @@ namespace SeevoConfig.Windows.Main
 
         public bool IsEditEnabled { get => EditDevice != null; }
 
+        private string log_text;
 
+        public string LogTextWrite { get => log_text; set { log_text = log_text + value + "\r\n"; NotifyPropertyChanged(); } }
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
