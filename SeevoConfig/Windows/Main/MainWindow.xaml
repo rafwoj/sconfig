@@ -12,8 +12,34 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
-
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel Grid.Column="0" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <StackPanel.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF4BA205" Offset="0"/>
+                    <GradientStop Color="#FF090A08" Offset="1"/>
+                    <GradientStop Color="#FF4D881E" Offset="0.377"/>
+                </LinearGradientBrush>
+            </StackPanel.Background>
+            <Label Height="6" />
+            <Label Content="SEEVO" HorizontalContentAlignment="Center" FontWeight="Bold" Height="13" Padding="0,0,0,0" Margin="0,0,0,0"/>
+            <Label Content="Configurator" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="12" Height="20" Padding="0,0,0,0"/>
+            <Label Height="20" />
+            <Button Content="Search" Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
+            <Button Content="Edit"   Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
+            <Button Content="Search" Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
+            <Button Content="File"   Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
+            <Button Content="Exit"   Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
+        </StackPanel>
+
+        
+        <Grid Grid.Column="1">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -109,5 +135,6 @@
 
         </StatusBar>
         <!-- Status -->
+    </Grid>
     </Grid>
 </Window>
