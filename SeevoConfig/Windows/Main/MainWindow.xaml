@@ -12,34 +12,40 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
-            <RowDefinition Height="1*" />
             <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <!-- Menu -->
         <Menu Grid.Row="0">
+            <MenuItem Header="_File" />
+            <MenuItem Header="_Communication" />
             <MenuItem Header="_Exit" />
         </Menu>
         <!-- Menu -->
 
         <!-- Top Buttons -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button Content="ExampleData" Click="ExampleDataButton_Click" />
-            <Button Content="Discovery" Click="DiscoveryButton_Click" />
-            <Button Content="Send" Click="SendButton_Click" />
-            <Button Content="Open file" Click="OpenButton_Click" />
-            <Button Content="Save as" Click="SaveAsButton_Click" />
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="2" Orientation="Horizontal">
+            <Button Content="ExampleData"  Margin="10" Click="ExampleDataButton_Click" Width="100" />
+            <Label Width="20" />
+            <Button Content="Discovery" Margin="10" Click="DiscoveryButton_Click" Width="100" />
+            <Label Width="20" />
+            <Button Content="Send" Margin="10"  Click="SendButton_Click" Width="100" />
+            <Label Width="20" />
+            <Button Content="Open file" Margin="10"  Click="OpenButton_Click" Width="100" />
+            <Label Width="20" />
+            <Button Content="Save as" Margin="10"  Click="SaveAsButton_Click" Width="100" />
         </StackPanel>
         <!-- Top Buttons -->
 
         <!-- List -->
-        <ListBox Grid.Row="2" ItemsSource="{Binding Project.Devices}" SelectedItem="{Binding SelectedDevice}" SelectionChanged="DevicesListBox_SelectionChanged"
+        <ListBox Grid.Row="2" Margin="10" ItemsSource="{Binding Project.Devices}" SelectedItem="{Binding SelectedDevice}" SelectionChanged="DevicesListBox_SelectionChanged"
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -64,16 +70,16 @@
 
         <!-- Edit Controls -->
         <GroupBox Grid.Row="3" IsEnabled="{Binding IsEditEnabled}">
-            <StackPanel>
+            <StackPanel HorizontalAlignment="Center">
                 <WrapPanel>
-                    <Label Content="Id: " />
-                    <TextBox Text="{Binding EditDevice.Id}" TextChanged="EditTextBox_TextChanged" />
-                    <Label Content="IP: " />
-                    <TextBox Text="{Binding EditDevice.IP}" TextChanged="EditTextBox_TextChanged" />
-                    <Label Content="Port: " />
-                    <TextBox Text="{Binding EditDevice.Port}" TextChanged="EditTextBox_TextChanged" />
-                    <Label Content="Events: " />
-                    <ComboBox ItemsSource="{Binding EditDevice.AvailableEvents}" IsSynchronizedWithCurrentItem="True"
+                    <Label Width="60" HorizontalContentAlignment="Right" Content="Id: " />
+                    <TextBox Width="100" Text="{Binding EditDevice.Id}" TextChanged="EditTextBox_TextChanged" />
+                    <Label  Width="60" HorizontalContentAlignment="Right" Content="IP: " />
+                    <TextBox  Width="100" Text="{Binding EditDevice.IP}" TextChanged="EditTextBox_TextChanged" />
+                    <Label Width="60" HorizontalContentAlignment="Right" Content="Port: " />
+                    <TextBox  Width="80" Text="{Binding EditDevice.Port}" TextChanged="EditTextBox_TextChanged" />
+                    <Label Width="80" HorizontalContentAlignment="Right"  Content="Events: " />
+                    <ComboBox Width="100" HorizontalContentAlignment="Center" ItemsSource="{Binding EditDevice.AvailableEvents}" IsSynchronizedWithCurrentItem="True"
                               SelectedItem="{Binding EditDevice.SelectedEvent}" SelectionChanged="EventsComboBox_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -82,9 +88,10 @@
                         </ComboBox.ItemTemplate>
                     </ComboBox>
                 </WrapPanel>
-                <StackPanel Orientation="Horizontal" >
-                    <Button Content="Cancel" Click="CancelButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" />
-                    <Button Content="Apply" Click="ApplyButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" />
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
+                    <Button Width="100" Content="Cancel" Click="CancelButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" VerticalAlignment="Bottom" />
+                    <Label Width="100" />
+                    <Button Width="100" Content="Apply" Click="ApplyButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" VerticalAlignment="Bottom" />
                 </StackPanel>
             </StackPanel>
         </GroupBox>
