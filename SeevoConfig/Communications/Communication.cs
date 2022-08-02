@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using SeevoConfig.Devices;
-using SeevoConfig.Other;
+using SeevoConfig.Errors;
 
 namespace SeevoConfig.Communications
 {
@@ -82,7 +82,7 @@ namespace SeevoConfig.Communications
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogAndDisplayError(ex);
+                    Logger.LogError(ex);
                 }
             }
         }
@@ -92,6 +92,5 @@ namespace SeevoConfig.Communications
             CancelDiscovering();
             //send to device
         }
-
     }
 }

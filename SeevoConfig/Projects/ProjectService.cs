@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
-using SeevoConfig.Other;
+using SeevoConfig.Errors;
 
 namespace SeevoConfig.Projects
 {
@@ -22,7 +22,7 @@ namespace SeevoConfig.Projects
             }
             catch (Exception ex)
             {
-                Logger.LogAndDisplayError(ex);
+                Logger.LogError(ex);
                 return null;
             }
         }
@@ -39,7 +39,7 @@ namespace SeevoConfig.Projects
             }
             catch (Exception ex)
             {
-                Logger.LogAndDisplayError(ex);
+                Logger.LogError(ex);
             }
         }
 

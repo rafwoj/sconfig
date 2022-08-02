@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using SeevoConfig.Devices;
 using SeevoConfig.Projects;
@@ -10,6 +11,7 @@ namespace SeevoConfig.Windows.Main
         private Project project;
         private SeevoModel selectedDevice;
         private SeevoModel editDevice;
+        private string logTextWrite;
 
         public Project Project { get => project; set { project = value; NotifyPropertyChanged(); } }
 
@@ -19,9 +21,8 @@ namespace SeevoConfig.Windows.Main
 
         public bool IsEditEnabled { get => EditDevice != null; }
 
-        private string log_text;
+        public string LogTextWrite { get => logTextWrite; set { logTextWrite = value; NotifyPropertyChanged(); } }
 
-        public string LogTextWrite { get => log_text; set { log_text = log_text + value + "\r\n"; NotifyPropertyChanged(); } }
         #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;

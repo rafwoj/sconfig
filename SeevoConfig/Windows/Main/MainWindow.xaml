@@ -100,8 +100,7 @@
 
         <!-- Log TextBox -->
         <ScrollViewer Grid.Row="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <TextBox  Name="logTextBox" Text="{Binding LogTextWrite}" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" VerticalContentAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" FontWeight="Bold" Margin="5,5,5,5" >
-            </TextBox>
+            <TextBox  Name="logTextBox" Text="{Binding LogTextWrite}" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" VerticalContentAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" FontWeight="Bold" Margin="5,5,5,5" />
         </ScrollViewer>
         <!-- Log TextBox -->
         

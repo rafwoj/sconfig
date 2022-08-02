@@ -1,11 +1,8 @@
-﻿using SeevoConfig.Other;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using SeevoConfig.Errors;
 
 namespace SeevoConfig.Communications
 {
@@ -29,7 +26,7 @@ namespace SeevoConfig.Communications
                                          ProtocolType.Udp);
 
                 IPAddress localIPAddr = IPAddress.Parse("192.168.1.109");
-                Logger.LogText("MULTICAST START ......");
+                Logger.LogDebug("MULTICAST START ......");
 
 
                 //IPAddress localIP = IPAddress.Any;
@@ -47,10 +44,9 @@ namespace SeevoConfig.Communications
                                             SocketOptionName.AddMembership,
                                             mcastOption);
             }
-
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Logger.LogAndDisplayError(e);
+                Logger.LogError(ex);
             }
         }
 
@@ -65,22 +61,21 @@ namespace SeevoConfig.Communications
             {
                 while (!done)
                 {
-                    Console.WriteLine("Waiting for multicast packets.......");
-                    Console.WriteLine("Enter ^C to terminate.");
+                    Logger.LogDebug("Waiting for multicast packets.......");
+                    Logger.LogDebug("Enter ^C to terminate.");
 
                     mcastSocket.ReceiveFrom(bytes, ref remoteEP);
 
-                    Console.WriteLine("Received broadcast from {0} :\n {1}\n",
-                      groupEP.ToString(),
-                      Encoding.ASCII.GetString(bytes, 0, bytes.Length));
+                    var msg = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
+                    Logger.LogDebug($"Received broadcast from {groupEP} :\n {msg}\n");
                 }
 
                 mcastSocket.Close();
             }
 
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e.ToString());
+                Logger.LogError(ex);
             }
         }
 

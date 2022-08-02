@@ -4,6 +4,7 @@ using System.Windows;
 using Microsoft.Win32;
 using SeevoConfig.Communications;
 using SeevoConfig.Devices;
+using SeevoConfig.Errors;
 using SeevoConfig.Projects;
 
 namespace SeevoConfig.Windows.Main
@@ -29,6 +30,22 @@ namespace SeevoConfig.Windows.Main
         {
             DataContext = viewModel;
             communication.DeviceJsonReceived += Communication_DeviceJsonReceived;
+            Logger.LoggerEvent += Logger_LoggerEvent;
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            communication.Dispose();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+
+        }
+
+        private void Logger_LoggerEvent(LoggerEventArgs e)
+        {
+            viewModel.LogTextWrite += Environment.NewLine + e.Message;
         }
 
         private void Communication_DeviceJsonReceived(DeviceJsonReceivedEventArgs e)
@@ -49,16 +66,6 @@ namespace SeevoConfig.Windows.Main
             }
 
             viewModel.Project.Devices.AddDevice(e.DeviceConfig);
-        }
-
-        private void Window_Closed(object sender, EventArgs e)
-        {
-            communication.Dispose();
-        }
-
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-
         }
 
         private void ExampleDataButton_Click(object sender, RoutedEventArgs e)

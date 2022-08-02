@@ -19,4 +19,8 @@
     <DebugType>portable</DebugType>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
 </Project>

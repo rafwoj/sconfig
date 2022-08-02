@@ -8,9 +8,9 @@ namespace SeevoConfig.Communications
     {
         public SeevoModel DeviceConfig { get; private set; }
 
-        public DeviceJsonReceivedEventArgs(SeevoModel Config)
+        public DeviceJsonReceivedEventArgs(SeevoModel config)
         {
-            this.DeviceConfig = Config;
+            DeviceConfig = config;
         }
     }
 }

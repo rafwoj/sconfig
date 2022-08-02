@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Threading;
-using SeevoConfig.Other;
+using SeevoConfig.Errors;
 using SeevoConfig.Windows.Main;
 
 namespace SeevoConfig
@@ -35,13 +35,13 @@ namespace SeevoConfig
 
         private void Dispatcher_UnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            Logger.LogAndDisplayError(e.Exception);
+            Logger.LogError(e.Exception);
             e.Handled = true;
         }
 
         private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            Logger.LogAndDisplayError(e.Exception);
+            Logger.LogError(e.Exception);
         }
     }
 }
