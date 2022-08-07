@@ -31,11 +31,6 @@
             <Label Content="SEEVO" HorizontalContentAlignment="Center" FontWeight="Bold" Height="13" Padding="0,0,0,0" Margin="0,0,0,0"/>
             <Label Content="Configurator" HorizontalContentAlignment="Center" FontWeight="Bold" FontSize="12" Height="20" Padding="0,0,0,0"/>
             <Label Height="20" />
-            <Button Content="Search" Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
-            <Button Content="Edit"   Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
-            <Button Content="Search" Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
-            <Button Content="File"   Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
-            <Button Content="Exit"   Margin="3,10,3,10" Padding="6" Height="65" Width="68"></Button>
         </StackPanel>
 
         
