@@ -50,7 +50,7 @@ namespace SeevoConfig.Communications
             }
         }
 
-        public static void ReceiveBroadcastMessages()
+        public void ReceiveBroadcastMessages()
         {
             bool done = false;
             byte[] bytes = new Byte[100];

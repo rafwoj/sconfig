@@ -65,6 +65,8 @@ namespace SeevoConfig.Communications
 
             var multicast = new MulticastDiscovery();
             multicast.StartMulticast();
+            // Receive broadcast messages.
+            multicast.ReceiveBroadcastMessages();
         }
 
         public void CancelDiscovering()
