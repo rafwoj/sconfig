@@ -63,7 +63,7 @@ namespace Mssc.TransportProtocols.Utilities
             {
                 //Send multicast packets to the listener.
                 endPoint = new IPEndPoint(mcastAddress, mcastPort);
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 1000; i++)
                 {
                     mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
                     Console.WriteLine("Multicast #{0} data sent.....   {1}",i, message);
@@ -91,7 +91,8 @@ namespace Mssc.TransportProtocols.Utilities
             JoinMulticastGroup();
 
             // Broadcast the message to the listener.
-            BroadcastMessage("Hello multicast listener.");
+            string s = "{ \"device-id\": \"module001\", \"device-ip\": \"192.168.12.1\",\"device-port\": 12001,\"device-mac\": \"AA:BB:CC:01:02:03\",\"device-events\": [\"on\", \"off\", \"short-click\", \"long-click\", \"very-long-click\", \"group01\", \"group02\", \"group03\", \"group04\", \"group01\"]}";
+            BroadcastMessage(s);
         }
     }
 }

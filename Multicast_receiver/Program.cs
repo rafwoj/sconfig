@@ -74,7 +74,7 @@ namespace Mssc.TransportProtocols.Utilities
         private static void ReceiveBroadcastMessages()
         {
             bool done = false;
-            byte[] bytes = new Byte[100];
+            byte[] bytes = new Byte[500];
             IPEndPoint groupEP = new IPEndPoint(mcastAddress, mcastPort);
             EndPoint remoteEP = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
 
