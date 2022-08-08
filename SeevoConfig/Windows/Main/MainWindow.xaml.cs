@@ -49,38 +49,40 @@ namespace SeevoConfig.Windows.Main
 
         private void Communication_SeevoConfigReceived(SeevoConfigReceivedEventArgs e)
         {
-            if (viewModel.Project == null)
+            Dispatcher.BeginInvoke(() =>
             {
-                lock (lockProject)
+                if (viewModel.Project == null)
                 {
-                    if (viewModel.Project == null)
-                    {
-                        viewModel.Project = ProjectService.New();
-                    }
+                    NewProject(false);
                 }
-            }
 
-            viewModel.Project.Devices.AddDevice(e.DeviceConfig);
+                viewModel.Project.Devices.AddDevice(e.DeviceConfig);
+            });
         }
 
-        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        private void NewProject(bool clearLog)
         {
             lock (lockProject)
             {
+                if (clearLog) { viewModel.LogTextWrite = null; }
+                Logger.LogDebug("New project");
                 viewModel.Project = ProjectService.New();
             }
         }
 
+        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            NewProject(true);
+        }
+
         private void ExampleDataButton_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.LogTextWrite = null;
             Logger.LogDebug("Button Example Data");
             communication.LoadExampleData();
         }
 
         private void DiscoveryButton_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.LogTextWrite = null;
             Logger.LogDebug("Discovery");
             communication.Discovery();
         }

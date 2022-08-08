@@ -49,20 +49,20 @@ namespace SeevoConfig.Communications
         {
             this.udp = udp;
             this.groupAddress = groupAddress;
-
-            udp.AllowNatTraversal(true);
-            udp.MulticastLoopback = true;
+            udp.JoinMulticastGroup(groupAddress);
         }
 
         public void Listen(CancellationToken cancellationToken)
         {
-            if (this.cancellationToken != null) { Disconnect(); }
+            if (this.cancellationToken != null && !IsCancellationRequested())
+            {
+                return;
+            }
 
             this.cancellationToken = cancellationToken;
-            if (DisconnectOnCancellationRequested()) { return; }
+            cancellationToken.Register(() => Logger.LogDebug("Timeout"));
 
             Logger.LogDebug("Listen");
-            udp.JoinMulticastGroup(groupAddress);
             BeginReceive();
         }
 
@@ -71,38 +71,9 @@ namespace SeevoConfig.Communications
             udp.BeginReceive(new AsyncCallback(ReceiveCallback), null);
         }
 
-        private bool DisconnectOnCancellationRequested()
-        {
-            //if (cancellationToken == null || !cancellationToken.HasValue) { throw new Exception("Invalid CancellationToken."); }
-
-            // tip 1: czasami już na początku cancellationToken == null i wtedy wyrzucał Exception
-            // tip 2: czasami nie wyskakiwał na Exception, ale dopiero po wykonaniu Disconect() cancellationToken == null
-            // dlatego dwa razy if...
-
-            if (cancellationToken == null) return false;
-            else
-            {
-                if (cancellationToken.Value.IsCancellationRequested)
-                {
-                    Disconnect();
-                };
-
-                if (cancellationToken == null) return false;
-                   else return cancellationToken.Value.IsCancellationRequested;
-            }
-        }
-
-        private void Disconnect()
-        {
-            if (udp?.Client == null) { return; }
-            Logger.LogDebug("Disconnect");
-            cancellationToken = null;
-            udp.DropMulticastGroup(groupAddress);
-        }
-
         private void ReceiveCallback(IAsyncResult result)
         {
-            if (DisconnectOnCancellationRequested()) { return; }
+            if (IsCancellationRequested()) { return; }
             if (udp?.Client == null) { return; }
 
             var remoteEndpoint = (IPEndPoint)udp.Client.RemoteEndPoint;
@@ -110,17 +81,35 @@ namespace SeevoConfig.Communications
             string receiveString = Encoding.UTF8.GetString(receiveBytes);
 
             DataReceived?.Invoke(new DataReceivedEventArgs(receiveString));
-            Logger.LogDebug(string.Concat(receiveString.AsSpan(0, 100), " ..."));
+            Logger.LogDebug(string.Concat(receiveString.AsSpan(0, 110), " ..."));
 
-            if (DisconnectOnCancellationRequested()) { return; }
+            if (IsCancellationRequested()) { return; }
             BeginReceive();
+        }
+
+        private bool IsCancellationRequested()
+        {
+            if (cancellationToken == null || !cancellationToken.HasValue) { throw new Exception("Invalid CancellationToken."); }
+            if (cancellationToken.Value.IsCancellationRequested)
+            {
+                return true;
+            };
+
+            return false;
+
         }
 
         private static UdpClient GetConfiguredClient()
         {
             var localPort = 11000;
             var endPoint = new IPEndPoint(IPAddress.Any, localPort);
-            return new UdpClient(endPoint);
+            var udp = new UdpClient(endPoint)
+            {
+                MulticastLoopback = true
+            };
+
+            udp.AllowNatTraversal(false);
+            return udp;
         }
 
         private static IPAddress GetMulticastGroupAddress()

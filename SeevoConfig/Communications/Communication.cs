@@ -70,7 +70,7 @@ namespace SeevoConfig.Communications
         }
 
         private void MulticastClient_DataReceived(DataReceivedEventArgs e)
-        {            
+        {
             var device = JsonSerializer.Deserialize<SeevoModel>(e.Data);
             SeevoConfigReceived?.Invoke(new SeevoConfigReceivedEventArgs(device));
         }
