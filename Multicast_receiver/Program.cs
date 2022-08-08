@@ -45,9 +45,7 @@ namespace Mssc.TransportProtocols.Utilities
                                          SocketType.Dgram,
                                          ProtocolType.Udp);
 
-                Console.Write("Enter the local IP address: ");
-
-                IPAddress localIPAddr = IPAddress.Parse(Console.ReadLine());
+                IPAddress localIPAddr = IPAddress.Any;
 
                 //IPAddress localIP = IPAddress.Any;
                 EndPoint localEP = (EndPoint)new IPEndPoint(localIPAddr, mcastPort);

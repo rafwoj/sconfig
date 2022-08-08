@@ -3,12 +3,12 @@ using SeevoConfig.Devices;
 
 namespace SeevoConfig.Communications
 {
-    public class DeviceJsonReceivedEventArgs : EventArgs
+    public class SeevoConfigReceivedEventArgs : EventArgs
 
     {
         public SeevoModel DeviceConfig { get; private set; }
 
-        public DeviceJsonReceivedEventArgs(SeevoModel config)
+        public SeevoConfigReceivedEventArgs(SeevoModel config)
         {
             DeviceConfig = config;
         }

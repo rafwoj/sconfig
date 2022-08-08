@@ -7,6 +7,17 @@ namespace SeevoConfig.Projects
 {
     public static class ProjectService
     {
+        public const string DefaultDescription = "Project Seevo";
+
+        public static Project New()
+        {
+            return new Project
+            {
+                Created = DateTime.Now,
+                Description = DefaultDescription
+            };
+        }
+
         public static Project Load(string path)
         {
             try

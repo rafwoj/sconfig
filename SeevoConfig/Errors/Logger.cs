@@ -12,12 +12,13 @@ namespace SeevoConfig.Errors
         public delegate void LoggerEventHandler(LoggerEventArgs e);
         public static event LoggerEventHandler LoggerEvent;
 
-        public static void LogDebug(string message, bool displayMessage = true)
+        public static void LogDebug(string message, bool displayMessage = false)
         {
             var logText = GetMessage(message, (string)null);
             LogToDebug(logText);
             LogLogToFile(logText);
             LogToEvent(message);
+            DisplayDebug(message, displayMessage);
         }
 
         public static void LogError(string message, bool displayMessage = true)
@@ -48,6 +49,12 @@ namespace SeevoConfig.Errors
             DisplayError(message, displayMessage);
         }
 
+        private static void DisplayDebug(string message, bool displayMessage)
+        {
+            if (!displayMessage) { return; }
+            MessageBox.Show(message, "Debug", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         private static void DisplayError(string message, bool displayMessage)
         {
             if (!displayMessage) { return; }
@@ -60,10 +67,7 @@ namespace SeevoConfig.Errors
         }
         private static void LogToEvent(string msg)
         {
-            if (LoggerEvent != null)
-            {
-                LoggerEvent.Invoke(new LoggerEventArgs(msg));
-            }
+            LoggerEvent?.Invoke(new LoggerEventArgs(msg));
         }
 
         private static void LogLogToFile(string msg)

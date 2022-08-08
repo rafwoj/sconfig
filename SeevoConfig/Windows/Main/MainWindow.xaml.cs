@@ -14,7 +14,6 @@ namespace SeevoConfig.Windows.Main
     /// </summary>
     public partial class MainWindow : Window
     {
-        private const string defaultProjectDescription = "Project Seevo";
         public readonly MainWindowVM viewModel;
         public readonly Communication communication;
         public object lockProject = new object();
@@ -29,7 +28,7 @@ namespace SeevoConfig.Windows.Main
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             DataContext = viewModel;
-            communication.DeviceJsonReceived += Communication_DeviceJsonReceived;
+            communication.SeevoConfigReceived += Communication_SeevoConfigReceived;
             Logger.LoggerEvent += Logger_LoggerEvent;
         }
 
@@ -45,10 +44,10 @@ namespace SeevoConfig.Windows.Main
 
         private void Logger_LoggerEvent(LoggerEventArgs e)
         {
-            viewModel.LogTextWrite += Environment.NewLine + e.Message;
+            viewModel.LogTextWrite += e.Message + Environment.NewLine;
         }
 
-        private void Communication_DeviceJsonReceived(DeviceJsonReceivedEventArgs e)
+        private void Communication_SeevoConfigReceived(SeevoConfigReceivedEventArgs e)
         {
             if (viewModel.Project == null)
             {
@@ -56,11 +55,7 @@ namespace SeevoConfig.Windows.Main
                 {
                     if (viewModel.Project == null)
                     {
-                        viewModel.Project = new Project
-                        {
-                            Created = DateTime.Now,
-                            Description = defaultProjectDescription
-                        };
+                        viewModel.Project = ProjectService.New();
                     }
                 }
             }
@@ -68,15 +63,25 @@ namespace SeevoConfig.Windows.Main
             viewModel.Project.Devices.AddDevice(e.DeviceConfig);
         }
 
+        private void NewProjectButton_Click(object sender, RoutedEventArgs e)
+        {
+            lock (lockProject)
+            {
+                viewModel.Project = ProjectService.New();
+            }
+        }
+
         private void ExampleDataButton_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.LogTextWrite = "Button Example Data";
+            viewModel.LogTextWrite = null;
+            Logger.LogDebug("Button Example Data");
             communication.LoadExampleData();
         }
 
         private void DiscoveryButton_Click(object sender, RoutedEventArgs e)
         {
-            viewModel.LogTextWrite = "Discovery";
+            viewModel.LogTextWrite = null;
+            Logger.LogDebug("Discovery");
             communication.Discovery();
         }
 
@@ -103,7 +108,6 @@ namespace SeevoConfig.Windows.Main
             {
                 lock (lockProject)
                 {
-                    communication.CancelDiscovering();
                     var project = ProjectService.Load(openDialog.FileName);
                     if (project == null) { return; }
                     viewModel.Project = project;
@@ -137,7 +141,7 @@ namespace SeevoConfig.Windows.Main
             {
                 if (string.IsNullOrEmpty(viewModel.Project.Description))
                 {
-                    viewModel.Project.Description = defaultProjectDescription;
+                    viewModel.Project.Description = ProjectService.DefaultDescription;
                 }
                 if (viewModel.Project.Created == default)
                 {
@@ -153,16 +157,16 @@ namespace SeevoConfig.Windows.Main
             DeviceSelection();
         }
 
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DeviceSelection();
+        }
+
         private void DeviceSelection()
         {
             if (viewModel.SelectedDevice == null) { return; }
             viewModel.EditDevice = new SeevoModel();
             viewModel.EditDevice.CopyFrom(viewModel.SelectedDevice);
-        }
-
-        private void CancelButton_Click(object sender, RoutedEventArgs e)
-        {
-            DeviceSelection();
         }
 
         private void ApplyButton_Click(object sender, RoutedEventArgs e)

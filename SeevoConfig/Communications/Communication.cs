@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
 using System.Text.Json;
+using System.Threading;
 using SeevoConfig.Devices;
 using SeevoConfig.Errors;
 
@@ -11,10 +9,12 @@ namespace SeevoConfig.Communications
 {
     public class Communication : IDisposable
     {
-        public delegate void DeviceJsonReceivedEventHandler(DeviceJsonReceivedEventArgs e);
-        public event DeviceJsonReceivedEventHandler DeviceJsonReceived;
+        public delegate void SeevoConfigReceivedEvent(SeevoConfigReceivedEventArgs e);
+        public event SeevoConfigReceivedEvent SeevoConfigReceived;
+        public readonly IMulticastClient multicastClient;
 
         #region IDisposable
+
         private bool disposedValue;
 
         protected virtual void Dispose(bool disposing)
@@ -23,7 +23,7 @@ namespace SeevoConfig.Communications
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    multicastClient?.Dispose();
                 }
                 disposedValue = true;
             }
@@ -35,12 +35,17 @@ namespace SeevoConfig.Communications
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
         #endregion
+
+        public Communication()
+        {
+            multicastClient = new MulticastClient();
+            multicastClient.DataReceived += MulticastClient_DataReceived;
+        }
 
         public void LoadExampleData()
         {
-            CancelDiscovering();
-
             var rnd = new Random();
 
             for (int i = 0; i < 9; i++)
@@ -54,26 +59,20 @@ namespace SeevoConfig.Communications
                     AvailableEvents = new List<string> { "none", "on", "off", "click", "group1", "group2", "group3" }
                 };
 
-                DeviceJsonReceived.Invoke(new DeviceJsonReceivedEventArgs(device));
+                SeevoConfigReceived?.Invoke(new SeevoConfigReceivedEventArgs(device));
             }
         }
 
         public void Discovery()
         {
-            // open port/communication here
-            StartMulticast();
-            // Receive broadcast messages.
-            ReceiveBroadcastMessages();
-
-
-/*            var json = "";
-            var device = JsonSerializer.Deserialize<SeevoModel>(json);
-            DeviceJsonReceived.Invoke(new DeviceJsonReceivedEventArgs(device));*/
+            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            multicastClient.Listen(cts.Token);
         }
 
-        public void CancelDiscovering()
-        {
-            // close port/communication here
+        private void MulticastClient_DataReceived(DataReceivedEventArgs e)
+        {            
+            var device = JsonSerializer.Deserialize<SeevoModel>(e.Data);
+            SeevoConfigReceived?.Invoke(new SeevoConfigReceivedEventArgs(device));
         }
 
         public void SendToDevices(IList<SeevoModel> list)
@@ -93,88 +92,7 @@ namespace SeevoConfig.Communications
 
         public void SendToDevice(SeevoModel model)
         {
-            CancelDiscovering();
             //send to device
         }
-
-#region multicast_receive
-        private static IPAddress mcastAddress;
-        private static int mcastPort;
-        private static Socket mcastSocket;
-        private static MulticastOption mcastOption;
-
-        public void StartMulticast()
-        {
-
-            try
-            {
-                mcastAddress = IPAddress.Parse("224.168.100.2");
-                mcastPort = 11000;
-
-                mcastSocket = new Socket(AddressFamily.InterNetwork,
-                                         SocketType.Dgram,
-                                         ProtocolType.Udp);
-
-                IPAddress localIPAddr = IPAddress.Parse("192.168.1.109");
-                Logger.LogDebug("MULTICAST START ......");
-
-
-                //IPAddress localIP = IPAddress.Any;
-                EndPoint localEP = (EndPoint)new IPEndPoint(localIPAddr, mcastPort);
-
-                mcastSocket.Bind(localEP);
-
-
-                // Define a MulticastOption object specifying the multicast group
-                // address and the local IPAddress.
-                // The multicast group address is the same as the address used by the server.
-                mcastOption = new MulticastOption(mcastAddress, localIPAddr);
-
-                mcastSocket.SetSocketOption(SocketOptionLevel.IP,
-                                            SocketOptionName.AddMembership,
-                                            mcastOption);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
-            }
-        }
-
-        public void ReceiveBroadcastMessages()
-        {
-            bool done = false;
-            byte[] bytes = new Byte[500];
-            IPEndPoint groupEP = new IPEndPoint(mcastAddress, mcastPort);
-            EndPoint remoteEP = (EndPoint)new IPEndPoint(IPAddress.Any, 0);
-
-            try
-            {
-                //while (!done)
-                //{
-                    Logger.LogDebug("Waiting for multicast packets.......");
-                    Logger.LogDebug("Enter ^C to terminate.");
-
-                    mcastSocket.ReceiveFrom(bytes, ref remoteEP);
-
-                    var msg = Encoding.ASCII.GetString(bytes, 0, bytes.Length);
-
-                    Logger.LogDebug($"Received broadcast from {groupEP} :\n {msg}\n");
-                    done = true;
-                //}
-
-                mcastSocket.Close();
-
-                var device = JsonSerializer.Deserialize<SeevoModel>(msg);
-                DeviceJsonReceived.Invoke(new DeviceJsonReceivedEventArgs(device));
-
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
-            }
-
-        }
-
-#endregion
     }
 }
