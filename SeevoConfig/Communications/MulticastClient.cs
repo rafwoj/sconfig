@@ -73,13 +73,23 @@ namespace SeevoConfig.Communications
 
         private bool DisconnectOnCancellationRequested()
         {
-            if (cancellationToken == null || !cancellationToken.HasValue) { throw new Exception("Invalid CancellationToken."); }
-            if (cancellationToken.Value.IsCancellationRequested)
-            {
-                Disconnect();
-            };
+            //if (cancellationToken == null || !cancellationToken.HasValue) { throw new Exception("Invalid CancellationToken."); }
 
-            return cancellationToken.Value.IsCancellationRequested;
+            // tip 1: czasami już na początku cancellationToken == null i wtedy wyrzucał Exception
+            // tip 2: czasami nie wyskakiwał na Exception, ale dopiero po wykonaniu Disconect() cancellationToken == null
+            // dlatego dwa razy if...
+
+            if (cancellationToken == null) return false;
+            else
+            {
+                if (cancellationToken.Value.IsCancellationRequested)
+                {
+                    Disconnect();
+                };
+
+                if (cancellationToken == null) return false;
+                   else return cancellationToken.Value.IsCancellationRequested;
+            }
         }
 
         private void Disconnect()
