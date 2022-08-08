@@ -73,7 +73,7 @@ namespace SeevoConfig.Communications
 
         private bool DisconnectOnCancellationRequested()
         {
-            if (!cancellationToken.HasValue) { throw new Exception("Invalid CancellationToken."); }
+            if (cancellationToken == null || !cancellationToken.HasValue) { throw new Exception("Invalid CancellationToken."); }
             if (cancellationToken.Value.IsCancellationRequested)
             {
                 Disconnect();
