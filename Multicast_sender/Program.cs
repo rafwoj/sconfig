@@ -89,17 +89,26 @@ namespace Mssc.TransportProtocols.Utilities
             mcastSocket.Close();
         }
 
-        public static void ThreadProc()
+        public static void ThreadProc( Object obj )
         {
+            int instance;
+            try
+            {
+                instance = (int)obj;
+            }
+            catch (InvalidCastException)
+            {
+                instance = 999;
+            }
 
             string s = "\"device-port\": 11000 , \"device-selected-event\": \"off\" ,\"device-available-events\": [\"on\", \"off\", \"short-click\", \"long-click\", \"very-long-click\", \"group01\", \"group02\", \"group03\", \"group04\", \"group01\"]";
 
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("{");
-            sb.AppendFormat(" \"thread-id\": \"{0}\", ", Thread.CurrentThread.ManagedThreadId);
-            sb.AppendFormat(" \"device-id\": \"module_{0}\", ", Thread.CurrentThread.ManagedThreadId);
-            sb.AppendFormat(" \"device-ip\": \"192.168.12.{0}\", ", Thread.CurrentThread.ManagedThreadId);
-            sb.AppendFormat(" \"device-mac\": \"AA:BB:CC:01:02:{0}\", ", Thread.CurrentThread.ManagedThreadId);
+            sb.AppendFormat(" \"thread-id\": \"{0}\", ", instance);
+            sb.AppendFormat(" \"device-id\": \"module_{0}\", ", instance);
+            sb.AppendFormat(" \"device-ip\": \"192.168.12.{0}\", ", instance);
+            sb.AppendFormat(" \"device-mac\": \"AA:BB:CC:01:02:{0}\", ", instance);
             sb.Append(s);
             sb.AppendLine("}");
 
@@ -113,7 +122,7 @@ namespace Mssc.TransportProtocols.Utilities
             //------ PARAMETRY -----------
             
             thread_count = 10;
-            delay_ms_between_json = 500;
+            delay_ms_between_json = 10;
             json_addidtional_chars = 100;
             json_repeat_counter = 3;
 
@@ -130,8 +139,9 @@ namespace Mssc.TransportProtocols.Utilities
 
             for ( int i = 0; i< thread_count; i++)
             {
-                t[i] = new Thread(new ThreadStart(ThreadProc));
-                t[i].Start();
+                //t[i] = new Thread(new ThreadStart(ThreadProc));
+                t[i] = new Thread(ThreadProc);
+                t[i].Start(i);
             }
 
             for (int i = 0; i < thread_count; i++) t[i].Join();
