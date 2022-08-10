@@ -19,6 +19,13 @@ namespace Mssc.TransportProtocols.Utilities
         static int mcastPort;
         static Socket mcastSocket;
 
+
+        static int thread_count = 3; //1...99 --->  ilość symulowanych urządzeń
+        static int delay_ms_between_json = 0; // opóźnienie w ms pomiedzy wysyłaniem kolejnych pakietów JSON
+        static int json_addidtional_chars = 100; //długość json w znakach
+        static int json_repeat_counter = 10; // ilosc powtórzeń wysyłki
+
+
         static void JoinMulticastGroup()
         {
             try
@@ -54,7 +61,7 @@ namespace Mssc.TransportProtocols.Utilities
             }
         }
 
-        static void BroadcastMessage(string message)
+        static void BroadcastMessage(string message, int count)
         {
             IPEndPoint endPoint;
 
@@ -62,11 +69,12 @@ namespace Mssc.TransportProtocols.Utilities
             {
                 //Send multicast packets to the listener.
                 endPoint = new IPEndPoint(mcastAddress, mcastPort);
-                for (int i = 0; i < 1000; i++)
+                for (int i = 0; i < count; i++)
                 {
                     mcastSocket.SendTo(ASCIIEncoding.ASCII.GetBytes(message), endPoint);
-                    Console.WriteLine("Multicast #{0} data sent.....   {1}",i, message);
-                    Thread.Sleep(1000);
+                    Console.WriteLine("Multicast #{0} thread: #{2} data sent.....   [{1}]", i, message, Thread.CurrentThread.ManagedThreadId);
+
+                    Thread.Sleep(delay_ms_between_json);
                 }
             }
             catch (Exception e)
@@ -74,24 +82,66 @@ namespace Mssc.TransportProtocols.Utilities
                 Console.WriteLine("\n" + e.ToString());
             }
 
+        }
+
+        static void MulticastSocketClose()
+        {
             mcastSocket.Close();
         }
 
+        public static void ThreadProc()
+        {
+
+            string s = "\"device-port\": 11000 , \"device-selected-event\": \"off\" ,\"device-available-events\": [\"on\", \"off\", \"short-click\", \"long-click\", \"very-long-click\", \"group01\", \"group02\", \"group03\", \"group04\", \"group01\"]";
+
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine("{");
+            sb.AppendFormat(" \"thread-id\": \"{0}\", ", Thread.CurrentThread.ManagedThreadId);
+            sb.AppendFormat(" \"device-id\": \"module_{0}\", ", Thread.CurrentThread.ManagedThreadId);
+            sb.AppendFormat(" \"device-ip\": \"192.168.12.{0}\", ", Thread.CurrentThread.ManagedThreadId);
+            sb.AppendFormat(" \"device-mac\": \"AA:BB:CC:01:02:{0}\", ", Thread.CurrentThread.ManagedThreadId);
+            sb.Append(s);
+            sb.AppendLine("}");
+
+            BroadcastMessage(sb.ToString(), json_repeat_counter);
+        }
+
+
+
         static void Main(string[] args)
         {
-            // Initialize the multicast address group and multicast port.
-            // Both address and port are selected from the allowed sets as
-            // defined in the related RFC documents. These are the same
-            // as the values used by the sender.
+            //------ PARAMETRY -----------
+            
+            thread_count = 10;
+            delay_ms_between_json = 500;
+            json_addidtional_chars = 100;
+            json_repeat_counter = 3;
+
+            //------ PARAMETRY -----------
+
             mcastAddress = IPAddress.Parse("224.168.100.2");
             mcastPort = 11000;
-
-            // Join the listener multicast group.
             JoinMulticastGroup();
 
-            // Broadcast the message to the listener.
-            string s = "{ \"device-id\": \"module001\", \"device-ip\": \"192.168.12.1\",\"device-port\": 12001,\"device-mac\": \"AA:BB:CC:01:02:03\", \"device-selected-event\": \"off\" ,\"device-available-events\": [\"on\", \"off\", \"short-click\", \"long-click\", \"very-long-click\", \"group01\", \"group02\", \"group03\", \"group04\", \"group01\"]}";
-            BroadcastMessage(s);
+
+            Thread[] t = new Thread[thread_count];
+
+            Console.WriteLine("START ...");
+
+            for ( int i = 0; i< thread_count; i++)
+            {
+                t[i] = new Thread(new ThreadStart(ThreadProc));
+                t[i].Start();
+            }
+
+            for (int i = 0; i < thread_count; i++) t[i].Join();
+
+
+            MulticastSocketClose();
+
+            Console.WriteLine("End ... Press ENTER key ...");
+            Console.ReadLine();
+
         }
     }
 }
