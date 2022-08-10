@@ -90,7 +90,7 @@ namespace Mssc.TransportProtocols.Utilities
             JoinMulticastGroup();
 
             // Broadcast the message to the listener.
-            string s = "{ \"device-id\": \"module001\", \"device-ip\": \"192.168.12.1\",\"device-port\": 12001,\"device-mac\": \"AA:BB:CC:01:02:03\",\"device-events\": [\"on\", \"off\", \"short-click\", \"long-click\", \"very-long-click\", \"group01\", \"group02\", \"group03\", \"group04\", \"group01\"]}";
+            string s = "{ \"device-id\": \"module001\", \"device-ip\": \"192.168.12.1\",\"device-port\": 12001,\"device-mac\": \"AA:BB:CC:01:02:03\", \"device-selected-event\": \"off\" ,\"device-available-events\": [\"on\", \"off\", \"short-click\", \"long-click\", \"very-long-click\", \"group01\", \"group02\", \"group03\", \"group04\", \"group01\"]}";
             BroadcastMessage(s);
         }
     }
