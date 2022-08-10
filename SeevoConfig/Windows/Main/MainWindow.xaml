@@ -33,103 +33,105 @@
             <Label Height="20" />
         </StackPanel>
 
-        
+
         <Grid Grid.Column="1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="auto" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
 
-        <!-- Menu -->
-        <Menu Grid.Row="0">
-            <MenuItem Header="_File" />
-            <MenuItem Header="_Communication" />
-            <MenuItem Header="_Exit" />
-        </Menu>
-        <!-- Menu -->
+            <!-- Menu -->
+            <Menu Grid.Row="0">
+                <MenuItem Header="_File" />
+                <MenuItem Header="_Communication" />
+                <MenuItem Header="_Exit" />
+            </Menu>
+            <!-- Menu -->
 
-        <!-- Top Buttons -->
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="2" Orientation="Horizontal">
-            <Button Content="ExampleData"  Margin="10" Click="ExampleDataButton_Click" Width="100" />
-            <Label Width="20" />
-            <Button Content="Discovery" Margin="10" Click="DiscoveryButton_Click" Width="100" />
-            <Label Width="20" />
-            <Button Content="Send" Margin="10"  Click="SendButton_Click" Width="100" />
-            <Label Width="20" />
-            <Button Content="Open file" Margin="10"  Click="OpenButton_Click" Width="100" />
-            <Label Width="20" />
-            <Button Content="Save as" Margin="10"  Click="SaveAsButton_Click" Width="100" />
-        </StackPanel>
-        <!-- Top Buttons -->
-
-        <!-- List -->
-        <ListBox Grid.Row="2" Margin="10" ItemsSource="{Binding Project.Devices}" SelectedItem="{Binding SelectedDevice}" SelectionChanged="DevicesListBox_SelectionChanged"
-                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColA" />
-                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColB" />
-                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColC" />
-                            <ColumnDefinition Width="auto" SharedSizeGroup="ListColD" />
-                        </Grid.ColumnDefinitions>
-
-                        <Label Grid.Column="0" Content="{Binding Id}" />
-                        <Label Grid.Column="1" Content="{Binding Mac}" />
-                        <Label Grid.Column="2" Content="{Binding Address}" />
-                        <Label Grid.Column="3" Content="*" Visibility="{Binding HasChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <!-- List -->
-
-        <!-- Edit Controls -->
-        <GroupBox Grid.Row="3" IsEnabled="{Binding IsEditEnabled}" Margin="5,5,5,5">
-            <StackPanel HorizontalAlignment="Center">
-                <WrapPanel>
-                    <Label Width="60" HorizontalContentAlignment="Right" Content="Id: " />
-                    <TextBox Width="100" Text="{Binding EditDevice.Id}" TextChanged="EditTextBox_TextChanged" />
-                    <Label  Width="60" HorizontalContentAlignment="Right" Content="IP: " />
-                    <TextBox  Width="100" Text="{Binding EditDevice.IP}" TextChanged="EditTextBox_TextChanged" />
-                    <Label Width="60" HorizontalContentAlignment="Right" Content="Port: " />
-                    <TextBox  Width="80" Text="{Binding EditDevice.Port}" TextChanged="EditTextBox_TextChanged" />
-                    <Label Width="80" HorizontalContentAlignment="Right"  Content="Events: " />
-                    <ComboBox Width="100" HorizontalContentAlignment="Center" ItemsSource="{Binding EditDevice.AvailableEvents}" IsSynchronizedWithCurrentItem="True"
-                              SelectedItem="{Binding EditDevice.SelectedEvent}" SelectionChanged="EventsComboBox_SelectionChanged">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding}"></TextBlock>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </WrapPanel>
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
-                    <Button Width="100" Content="Cancel" Click="CancelButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" VerticalAlignment="Bottom" />
-                    <Label Width="100" />
-                    <Button Width="100" Content="Apply" Click="ApplyButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" VerticalAlignment="Bottom" />
-                </StackPanel>
+            <!-- Top Buttons -->
+            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="2" Orientation="Horizontal">
+                <Button Content="New Project"  Margin="10" Click="NewProjectButton_Click" Width="100" />
+                <Label Width="20" />
+                <Button Content="Example Data"  Margin="10" Click="ExampleDataButton_Click" Width="100" />
+                <Label Width="20" />
+                <Button Content="Discovery" Margin="10" Click="DiscoveryButton_Click" Width="100" />
+                <Label Width="20" />
+                <Button Content="Send" Margin="10"  Click="SendButton_Click" Width="100" />
+                <Label Width="20" />
+                <Button Content="Open file" Margin="10"  Click="OpenButton_Click" Width="100" />
+                <Label Width="20" />
+                <Button Content="Save as" Margin="10"  Click="SaveAsButton_Click" Width="100" />
             </StackPanel>
-        </GroupBox>
-        <!-- Edit Controls -->
+            <!-- Top Buttons -->
 
-        <!-- Log TextBox -->
-        <ScrollViewer Grid.Row="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <TextBox  Name="logTextBox" Text="{Binding LogTextWrite}" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" VerticalContentAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" FontWeight="Bold" Margin="5,5,5,5" />
-        </ScrollViewer>
-        <!-- Log TextBox -->
-        
-        <!-- Status -->
-        <StatusBar Grid.Row="5">
+            <!-- List -->
+            <ListBox Grid.Row="2" Margin="10" ItemsSource="{Binding Project.Devices}" SelectedItem="{Binding SelectedDevice}" SelectionChanged="DevicesListBox_SelectionChanged"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderBrush="Gray" BorderThickness="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" SharedSizeGroup="ListColA" />
+                                <ColumnDefinition Width="auto" SharedSizeGroup="ListColB" />
+                                <ColumnDefinition Width="auto" SharedSizeGroup="ListColC" />
+                                <ColumnDefinition Width="auto" SharedSizeGroup="ListColD" />
+                            </Grid.ColumnDefinitions>
 
-        </StatusBar>
-        <!-- Status -->
-    </Grid>
+                            <Label Grid.Column="0" Content="{Binding Id}" />
+                            <Label Grid.Column="1" Content="{Binding Mac}" />
+                            <Label Grid.Column="2" Content="{Binding Address}" />
+                            <Label Grid.Column="3" Content="*" Visibility="{Binding HasChanged, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <!-- List -->
+
+            <!-- Edit Controls -->
+            <GroupBox Grid.Row="3" IsEnabled="{Binding IsEditEnabled}" Margin="5,5,5,5">
+                <StackPanel HorizontalAlignment="Center">
+                    <WrapPanel>
+                        <Label Width="60" HorizontalContentAlignment="Right" Content="Id: " />
+                        <TextBox Width="100" Text="{Binding EditDevice.Id}" TextChanged="EditTextBox_TextChanged" />
+                        <Label  Width="60" HorizontalContentAlignment="Right" Content="IP: " />
+                        <TextBox  Width="100" Text="{Binding EditDevice.IP}" TextChanged="EditTextBox_TextChanged" />
+                        <Label Width="60" HorizontalContentAlignment="Right" Content="Port: " />
+                        <TextBox  Width="80" Text="{Binding EditDevice.Port}" TextChanged="EditTextBox_TextChanged" />
+                        <Label Width="80" HorizontalContentAlignment="Right"  Content="Events: " />
+                        <ComboBox Width="100" HorizontalContentAlignment="Center" ItemsSource="{Binding EditDevice.AvailableEvents}" IsSynchronizedWithCurrentItem="True"
+                              SelectedItem="{Binding EditDevice.SelectedEvent}" SelectionChanged="EventsComboBox_SelectionChanged">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}"></TextBlock>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </WrapPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" >
+                        <Button Width="100" Content="Cancel" Click="CancelButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" VerticalAlignment="Bottom" />
+                        <Label Width="100" />
+                        <Button Width="100" Content="Apply" Click="ApplyButton_Click" IsEnabled="{Binding EditDevice.HasChanged}" VerticalAlignment="Bottom" />
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <!-- Edit Controls -->
+
+            <!-- Log TextBox -->
+            <ScrollViewer Grid.Row="4" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <TextBox  Name="logTextBox" Text="{Binding LogTextWrite}" TextWrapping="Wrap" AcceptsReturn="True" VerticalAlignment="Stretch" VerticalContentAlignment="Top" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" FontWeight="Bold" Margin="5,5,5,5" />
+            </ScrollViewer>
+            <!-- Log TextBox -->
+
+            <!-- Status -->
+            <StatusBar Grid.Row="5">
+
+            </StatusBar>
+            <!-- Status -->
+        </Grid>
     </Grid>
 </Window>
