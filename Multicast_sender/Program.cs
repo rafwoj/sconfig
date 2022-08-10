@@ -102,6 +102,8 @@ namespace Mssc.TransportProtocols.Utilities
             }
 
             string s = "\"device-port\": 11000 , \"device-selected-event\": \"off\" ,\"device-available-events\": [\"on\", \"off\", \"short-click\", \"long-click\", \"very-long-click\", \"group01\", \"group02\", \"group03\", \"group04\", \"group01\"]";
+            string fake_data = new string('#', json_addidtional_chars);
+
 
             var sb = new System.Text.StringBuilder();
             sb.AppendLine("{");
@@ -110,6 +112,7 @@ namespace Mssc.TransportProtocols.Utilities
             sb.AppendFormat(" \"device-ip\": \"192.168.12.{0}\", ", instance);
             sb.AppendFormat(" \"device-mac\": \"AA:BB:CC:01:02:{0}\", ", instance);
             sb.Append(s);
+            sb.AppendFormat(" , \"fake-data\": \"{0}\" ", fake_data);
             sb.AppendLine("}");
 
             BroadcastMessage(sb.ToString(), json_repeat_counter);
