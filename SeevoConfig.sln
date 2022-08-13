@@ -10,9 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multicast_sender", "Multicast_sender\Multicast_sender.csproj", "{6156C9DB-B6C5-421D-9E49-DD9A2F3D002C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multicast_sender", "Multicast_sender\Multicast_sender.csproj", "{6156C9DB-B6C5-421D-9E49-DD9A2F3D002C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multicast_receiver", "Multicast_receiver\Multicast_receiver.csproj", "{4ED51777-B940-443C-8226-4493CC2166D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multicast_receiver", "Multicast_receiver\Multicast_receiver.csproj", "{4ED51777-B940-443C-8226-4493CC2166D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fake_UI", "Fake_UI_2\Fake_UI.csproj", "{3B2353C3-07B1-48E0-8307-7398A06C390A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{4ED51777-B940-443C-8226-4493CC2166D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4ED51777-B940-443C-8226-4493CC2166D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ED51777-B940-443C-8226-4493CC2166D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B2353C3-07B1-48E0-8307-7398A06C390A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B2353C3-07B1-48E0-8307-7398A06C390A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B2353C3-07B1-48E0-8307-7398A06C390A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B2353C3-07B1-48E0-8307-7398A06C390A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
