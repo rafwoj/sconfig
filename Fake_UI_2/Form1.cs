@@ -46,5 +46,15 @@ namespace Fake_UI_2
         {
 
         }
+
+        private void label38_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox15_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
