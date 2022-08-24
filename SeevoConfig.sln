@@ -14,7 +14,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multicast_sender", "Multica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Multicast_receiver", "Multicast_receiver\Multicast_receiver.csproj", "{4ED51777-B940-443C-8226-4493CC2166D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fake_UI", "Fake_UI_2\Fake_UI.csproj", "{3B2353C3-07B1-48E0-8307-7398A06C390A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fake_UI", "Fake_UI_2\Fake_UI.csproj", "{3B2353C3-07B1-48E0-8307-7398A06C390A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fake_UI_3", "Fake_UI_3\Fake_UI_3.csproj", "{4959E1F3-1F09-48BA-9425-17A21EEF948D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +40,10 @@ Global
 		{3B2353C3-07B1-48E0-8307-7398A06C390A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B2353C3-07B1-48E0-8307-7398A06C390A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B2353C3-07B1-48E0-8307-7398A06C390A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4959E1F3-1F09-48BA-9425-17A21EEF948D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4959E1F3-1F09-48BA-9425-17A21EEF948D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4959E1F3-1F09-48BA-9425-17A21EEF948D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4959E1F3-1F09-48BA-9425-17A21EEF948D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
